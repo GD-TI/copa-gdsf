@@ -1925,7 +1925,7 @@ function loadDemo(){
 }
 
 /* ─── API IMAGE HELPER ─── */
-function getImg(x){ return getImg(x) || x.image || ''; }
+function getImg(x){ return avatars[x.id] || x.image || ''; }
 
 /* ─── FETCH SELLERS FROM API ─── */
 function fetchSellers(){
