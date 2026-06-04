@@ -124,7 +124,7 @@ function buildIParam(startDate, endDate) {
     onlyDuplicadas: false,
     hideDuplicadas: false,
     hide_repassado: false,
-    data: { tipo: "cadastro", startDate, endDate, intervalo },
+    data: { tipo: "pagamento", startDate, endDate, intervalo },
   };
   // Same encoding the original browser uses: btoa(encodeURIComponent(JSON.stringify(...)))
   return Buffer.from(encodeURIComponent(JSON.stringify(params))).toString(
