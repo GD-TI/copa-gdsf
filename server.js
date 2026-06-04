@@ -1,9 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 dotenv.config();
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.use(cors());
 
@@ -124,7 +127,10 @@ app.get('/api/sellers', async (req, res) => {
   }
 });
 
+// Serve index.html em / (deve ficar após as rotas de API)
+app.get('/', (_req, res) => res.sendFile(join(__dirname, 'index.html')));
+
 const PORT = process.env.PORT ?? 5000;
 app.listen(PORT, '0.0.0.0', () =>
-  console.log(`Copa GD backend rodando em :${PORT}`)
+  console.log(`Copa GD rodando em http://0.0.0.0:${PORT}`)
 );

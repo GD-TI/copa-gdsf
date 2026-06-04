@@ -6,6 +6,7 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY server.js .
+COPY index.html .
 
 EXPOSE 5000
 
