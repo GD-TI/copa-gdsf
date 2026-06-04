@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -9,6 +10,7 @@ dotenv.config();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.use(cors());
+app.use(morgan(':method :url :status :res[content-length]b - :response-time ms'));
 
 const LOGIN_URL  = 'https://server.newcorban.com.br/api/v2/login';
 const RANKING_URL = 'https://server.newcorban.com.br/system/ranking.php';

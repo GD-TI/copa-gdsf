@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     env_file: .env
     ports:
-      - "8080:5000"
+      - "5000:5000"
     volumes:
       - ./index.html:/app/index.html:ro
     restart: unless-stopped
