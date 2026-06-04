@@ -60,7 +60,7 @@ function buildIParam(startDate, endDate) {
     banco: [], not_banco: [],
     promotora: [], not_promotora: [],
     status: [], not_status: [],
-    produto: [], not_produto: [],
+    produto: ['7', '13'], not_produto: [],
     convenio: [], not_convenio: [],
     equipe: [], not_equipe: [],
     vendedor: [], not_vendedor: NOT_VENDEDOR,

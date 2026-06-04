@@ -75,6 +75,7 @@ def build_i_param(start_date: str, end_date: str) -> str:
         "banco": [], "not_banco": [],
         "promotora": [], "not_promotora": [],
         "status": [], "not_status": [],
+        
         "produto": ["7","13"], "not_produto": [],
         "convenio": [], "not_convenio": [],
         "equipe": [], "not_equipe": [],
