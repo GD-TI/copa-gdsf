@@ -94,29 +94,34 @@ app.get('/api/sellers', async (req, res) => {
 
     const data   = await apiRes.json();
     const result = data.result ?? {};
-    const seen   = new Map();
+    console.log(`[sellers] result keys: ${Object.keys(result).length}`);
 
-    for (const group of Object.values(result)) {
-      for (const sinfo of Object.values(group.second_level ?? {})) {
-        const sid = String(sinfo.filter_value ?? '').trim();
-        if (!sid) continue;
-        const val = parseFloat(sinfo.valor_referencia ?? 0);
-        if (!seen.has(sid) || val > parseFloat(seen.get(sid).valor_referencia ?? 0)) {
-          seen.set(sid, sinfo);
-        }
-      }
+    const seen = new Map(); // filter_value → seller object
+
+    for (const entry of Object.values(result)) {
+      const sid = String(entry.filter_value ?? '').trim();
+      if (!sid) continue;
+
+      // Image lives in second_level under the seller's own entry
+      const ownSl = Object.values(entry.second_level ?? {}).find(
+        s => String(s.filter_value).trim() === sid
+      );
+
+      const seller = {
+        id:            sid,
+        name:          entry.name ?? '',
+        value:         parseFloat(entry.valor_referencia ?? 0),
+        metaInd:       parseFloat(entry.valor_meta ?? 0),
+        image:         ownSl?.image ?? entry.image ?? '',
+        qtd_propostas: parseInt(entry.qtd_propostas ?? 0, 10),
+      };
+
+      const prev = seen.get(sid);
+      if (!prev || seller.value > prev.value) seen.set(sid, seller);
     }
 
-    const sellers = Array.from(seen.values())
-      .map(s => ({
-        id:            String(s.filter_value ?? ''),
-        name:          s.name ?? '',
-        value:         parseFloat(s.valor_referencia ?? 0),
-        metaInd:       parseFloat(s.valor_meta ?? 0),
-        image:         s.image ?? '',
-        qtd_propostas: parseInt(s.qtd_propostas ?? 0, 10),
-      }))
-      .sort((a, b) => b.value - a.value);
+    console.log(`[sellers] unique sellers: ${seen.size}`);
+    const sellers = Array.from(seen.values()).sort((a, b) => b.value - a.value);
 
     res.json({ ok: true, sellers });
 
