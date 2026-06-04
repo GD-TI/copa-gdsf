@@ -1,0 +1,33 @@
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - copa-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/sellers')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - copa-net
+
+networks:
+  copa-net:
+    driver: bridge
